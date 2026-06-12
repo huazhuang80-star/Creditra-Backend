@@ -1,8 +1,16 @@
 import type { Response } from 'express';
 
-// Standardized response envelope interface
+/**
+ * Standardized API response envelope.
+ *
+ * Every JSON response emitted by the API follows this shape so clients can
+ * branch on the presence of `error` rather than parsing free-form payloads.
+ * Exactly one of `data` / `error` is expected to be non-null at a time.
+ */
 export interface ApiResponse<T = unknown> {
+    /** Successful payload, or `null` when an error is present. */
     data: T | null;
+    /** Human-readable error message, or `null` on success. */
     error: string | null;
 }
 
