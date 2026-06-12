@@ -6,3 +6,16 @@ dist
 !.env.example
 .DS_Store
 *.log
+
+# Editor and IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+
+# Temp files
+*.tmp
+*.bak
