@@ -1,3 +1,21 @@
+/**
+ * Outbound-webhook management routes mounted at `/api/webhooks`.
+ *
+ * These endpoints describe the **server's** outbound webhook fan-out (the
+ * draw-confirmation push). The backend does not currently receive any
+ * inbound webhooks.
+ *
+ * Surface:
+ * - GET  `/config`      — sanitized config (URLs + retry knobs; secret
+ *   never returned).
+ * - POST `/test`        — sends a connectivity probe to every configured
+ *   URL and returns a `{ reachable, unreachable, results[] }` summary.
+ * - GET  `/health`      — `active` / `disabled` state, used by dashboards.
+ *
+ * Outbound payload contract (subscriber side) is documented in
+ * `docs/API.md` §Webhooks: HMAC-SHA256 over the raw body, signed with
+ * `WEBHOOK_SECRET`, delivered as `X-Webhook-Signature: sha256=…`.
+ */
 import { Router, type Request, type Response } from 'express';
 import { getWebhookConfig, testWebhookConnectivity } from '../services/drawWebhookService.js';
 import { redactLogArgs } from '../utils/logRedact.js';

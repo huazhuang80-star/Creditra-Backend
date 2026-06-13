@@ -1,3 +1,18 @@
+/**
+ * Risk-evaluation routes mounted at `/api/risk` by `src/index.ts`.
+ *
+ * Surface (see `docs/API.md` and `docs/SIGNALS_INGEST.md` for the pipeline):
+ * - POST `/evaluate`                          — body validated; returns
+ *   the cached evaluation when fresh (<24h) unless `forceRefresh: true`.
+ * - GET  `/evaluations/:id`                   — fetch by id (404 if missing).
+ * - GET  `/wallet/:walletAddress/latest`      — most recent for wallet.
+ * - GET  `/wallet/:walletAddress/history`     — paginated history.
+ * - POST `/admin/recalibrate`                 — protected by `X-API-Key`.
+ *
+ * Wallet path params are validated against the Stellar pubkey regex via
+ * `walletAddressParamSchema`. The provider behind these routes is
+ * pluggable — see `RISK_PROVIDER` and `src/services/providers/`.
+ */
 import { Router, type Request, type Response } from 'express';
 import { createApiKeyMiddleware } from '../middleware/auth.js';
 import { loadApiKeys } from '../config/apiKeys.js';

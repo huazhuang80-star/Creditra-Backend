@@ -1,3 +1,27 @@
+/**
+ * Credit-line routes mounted at `/api/credit` by `src/index.ts`.
+ *
+ * Surface (see `docs/API.md` for full request/response shapes):
+ * - GET    `/lines`                            — list (public)
+ * - GET    `/lines/:id`                        — fetch (public)
+ * - POST   `/lines`                            — create (validated body)
+ * - PUT    `/lines/:id`                        — patch
+ * - DELETE `/lines/:id`                        — delete
+ * - GET    `/wallet/:walletAddress/lines`      — by wallet (validated path)
+ * - GET    `/lines/:id/transactions`           — history with filters & paging
+ * - POST   `/lines/:id/draw`                   — draw (validated body)
+ * - POST   `/lines/:id/repay`                  — repay (validated body)
+ * - POST   `/lines/:id/suspend`                — admin-auth state transition
+ * - POST   `/lines/:id/close`                  — admin-auth state transition
+ *
+ * Domain errors are mapped to HTTP status by {@link handleServiceError}:
+ * - {@link CreditLineNotFoundError} → 404
+ * - {@link InvalidTransitionError}  → 409
+ * - anything else                   → 500
+ *
+ * Successful responses use the shared envelope helpers `ok()` / `fail()`
+ * from `src/utils/response.ts` so every body looks like `{ data, error }`.
+ */
 import { Router, type Request, type Response } from 'express';
 import { validateBody } from '../middleware/validate.js';
 import {

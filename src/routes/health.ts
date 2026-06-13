@@ -1,3 +1,21 @@
+/**
+ * Health / readiness endpoint.
+ *
+ * `GET /health` performs two parallel dependency probes — Postgres and
+ * Stellar Horizon — each with its own bounded timeout. The aggregated
+ * envelope is suitable for both Kubernetes `livenessProbe` (HTTP 200) and
+ * `readinessProbe` (`data.ready === true`).
+ *
+ * - Database probe: `SELECT 1` with a 1s timeout
+ * - Horizon probe: `fetch(HORIZON_URL)` with a 2s timeout
+ *
+ * Dependency status vocabulary:
+ * - `ok` — reachable and behaved
+ * - `unconfigured` — required env var missing
+ * - `degraded` — reachable but errored or timed out
+ *
+ * See `docs/OBSERVABILITY.md` §3 for sample manifests.
+ */
 import { Router } from 'express';
 import { ok } from '../utils/response.js';
 import { getConnection } from '../db/client.js';
