@@ -1,3 +1,26 @@
+/**
+ * Soroban RPC client.
+ *
+ * Thin wrapper over the Stellar Soroban JSON-RPC endpoint with three
+ * design priorities:
+ *
+ * 1. **Bounded latency.** Every request is gated by an `AbortController`
+ *    using `timeoutMs` (default 30s).
+ * 2. **Retry budget.** Transient failures are retried up to `maxRetries`
+ *    with exponential backoff plus jitter; non-transient failures throw
+ *    immediately.
+ * 3. **Secret hygiene.** Any Stellar key matching `G[A-Z2-7]{55}` is
+ *    stripped from error strings before re-raising, so logs and metrics
+ *    can never echo a borrower's pubkey.
+ *
+ * The interface intentionally exposes only the calls the backend needs:
+ * - `simulateContractRead` — read-only gas-free contract call
+ * - `submitTransaction` — broadcast a signed XDR
+ * - `getCreditLine` — credit-specific read helper
+ * - `readContract<T>` — typed generic wrapper around simulate
+ *
+ * See `docs/INDEXER.md` for how reads, writes, and the listener combine.
+ */
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------

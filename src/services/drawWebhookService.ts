@@ -1,3 +1,20 @@
+/**
+ * Outbound webhook fan-out for confirmed draw events.
+ *
+ * Drives the protocol's "the chain saw your draw" notification path.
+ * Subscriber URLs come from `WEBHOOK_URLS` (comma-separated) and the HMAC
+ * secret from `WEBHOOK_SECRET`. Retries follow exponential backoff bounded
+ * by `WEBHOOK_MAX_RETRIES`.
+ *
+ * Signature contract sent to subscribers:
+ * - `X-Webhook-Signature: sha256=<hex HMAC over raw body>`
+ * - `X-Webhook-Timestamp: <ms since epoch>`
+ * - `User-Agent: Creditra-Webhook/1.0`
+ *
+ * Subscribers must (a) re-compute the HMAC and compare in constant time,
+ * (b) reject timestamps outside their tolerance window, and
+ * (c) deduplicate by `data.drawId`. See `docs/API.md` §Webhooks.
+ */
 import { createHmac } from "node:crypto";
 import type { HorizonEvent } from "./horizonListener.js";
 
