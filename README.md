@@ -257,6 +257,7 @@ Creditra-Backend/
 | [`docs/INDEXER.md`](./docs/INDEXER.md) | Horizon listener cursor model, reorg/gap handling, reconciliation |
 | [`docs/OBSERVABILITY.md`](./docs/OBSERVABILITY.md) | Logs, metrics, health probes, tracing strategy |
 | [`docs/TESTING.md`](./docs/TESTING.md) | Test pyramid, file counts, integration vs unit |
+| [`docs/webhook-subscribers.md`](./docs/webhook-subscribers.md) | Subscriber onboarding, HMAC verification, retry, and idempotency guidance |
 | [`CONTRIBUTING.md`](./CONTRIBUTING.md) | Commit conventions, PR template, review checklist |
 | [`docs/data-model.md`](./docs/data-model.md) | Per-table column reference |
 | [`docs/HORIZON_LISTENER_CONFIG.md`](./docs/HORIZON_LISTENER_CONFIG.md) | Env-var reference for the listener |
